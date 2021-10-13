@@ -56,7 +56,6 @@ function App() {
         <Button
           onClick={fetchAddressForDomain}
           style={{ color: "blue", fontWeight: "700" }}>
-          {" "}
           Resolve the Unstoppable Domain{" "}
         </Button>
       </Center>
