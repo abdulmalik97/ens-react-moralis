@@ -1,4 +1,4 @@
-import ENSAddress from "@ensdomains/react-ens-address";
+// import ENSAddress from "@ensdomains/react-ens-address";
 import {
   useMoralis,
   useMoralisWeb3Api,
@@ -12,6 +12,8 @@ function App() {
   const { web3, enableWeb3, isWeb3Enabled } = useMoralis();
   const Web3Api = useMoralisWeb3Api();
   const [domainName, setDomainName] = useState("");
+  const [ensAddres, setEnsAddress] = useState("");
+
   const handleDomainChange = (event) => setDomainName(event.target.value);
 
   //function to call the Unstoppable domain resolver through Moralis API
@@ -28,6 +30,12 @@ function App() {
     },
     { autoFetch: false } //so that it doesn't fetch on every component render
   );
+
+  const ensCall = () => {
+    web3.eth.ens.getAddress(domainName).then(function (address) {
+      setEnsAddress(address);
+    });
+  };
 
   //Make sure Web3 is enabled before running the functions
   useEffect(() => {
@@ -57,13 +65,21 @@ function App() {
           style={{ color: "blue", fontWeight: "700" }}>
           Resolve the Unstoppable Domain{" "}
         </Button>
+        <Button onClick={ensCall} style={{ color: "blue", fontWeight: "700" }}>
+          Resolve the ENS Domain{" "}
+        </Button>
       </Center>
       <br />
       <Center style={{ fontWeight: "700" }}>
-        Unstoppable Domain: {data ? data.address : "Enter valid domain"}
+        Unstoppable Domain:{" "}
+        {data ? data.address : "Enter valid Unstoppable domain"}
+      </Center>
+      <Center style={{ fontWeight: "700" }}>
+        ENS Domain: {ensAddres ? ensAddres : "Enter valid ENS domain"}
       </Center>
       <Divider />
-      <Center>
+
+      {/* <Center>
         <p style={{ fontWeight: "700", fontSize: "large", padding: 10 }}>
           ENS Domain Resolver
         </p>
@@ -72,7 +88,7 @@ function App() {
             <ENSAddress provider={web3.givenProvider || web3.currentProvider} />
           )}
         </div>
-      </Center>
+      </Center> */}
     </Box>
   );
 }
