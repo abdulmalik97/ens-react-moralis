@@ -10,12 +10,11 @@ import { Button, Center, Box, Input, Divider } from "@chakra-ui/react";
 
 function App() {
   const { web3, enableWeb3, isWeb3Enabled } = useMoralis();
-
   const Web3Api = useMoralisWeb3Api();
-
   const [domainName, setDomainName] = useState("");
   const handleDomainChange = (event) => setDomainName(event.target.value);
 
+  //function to call the Unstoppable domain resolver through Moralis API
   const {
     fetch: fetchAddressForDomain,
     data,
@@ -27,15 +26,15 @@ function App() {
       currency: "eth",
       domain: domainName,
     },
-    { autoFetch: false }
+    { autoFetch: false } //so that it doesn't fetch on every component render
   );
 
+  //Make sure Web3 is enabled before running the functions
   useEffect(() => {
     if (!isWeb3Enabled) {
       enableWeb3();
-      console.log(web3.givenProvider, web3.currentProvider);
     }
-  }, [isWeb3Enabled, enableWeb3, web3.givenProvider, web3.currentProvider]);
+  }, [isWeb3Enabled, enableWeb3]);
 
   return (
     <Box display={"block"} p={35} className="App">
@@ -61,11 +60,11 @@ function App() {
       </Center>
       <br />
       <Center style={{ fontWeight: "700" }}>
-        Unstoppable Domain: {data ? data.address : ""}
+        Unstoppable Domain: {data ? data.address : "Enter valid domain"}
       </Center>
       <Divider />
       <Center>
-        <p style={{ fontWeight: "700", fontSize: "large" }}>
+        <p style={{ fontWeight: "700", fontSize: "large", padding: 10 }}>
           ENS Domain Resolver
         </p>
         <div>
